@@ -1,0 +1,95 @@
+# This workflow ensure that the smart contracts can be compiled with different Solidity 0.8.x versions
+# It checks if the `pragma solidity ^0.8.x` statement for `.sol` files satisfy the minimum version
+# require by the Solidity language features used in this file.
+name: Solidity Compiler Versions
+
+on:
+  workflow_dispatch:
+  push:
+    # Used to check before releasing
+    branches:
+      - "develop"
+    # Only run when `.sol` files have been changed
+    paths:
+      - "*.sol"
+
+  pull_request:
+    paths:
+      - "*.sol"
+
+jobs:
+  solc_version:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/lsp-smart-contracts
+    strategy:
+      matrix:
+        solc: [
+            "0.8.5",
+            "0.8.6",
+            "0.8.7",
+            "0.8.8",
+            "0.8.9",
+            "0.8.10",
+            "0.8.11",
+            "0.8.12",
+            "0.8.13",
+            "0.8.14",
+            "0.8.15",
+            "0.8.16",
+            # 0.8.17 skipped as default in hardhat.config.ts
+            "0.8.18",
+            "0.8.19",
+            "0.8.20",
+            "0.8.21",
+            "0.8.22",
+            "0.8.23",
+            "0.8.24",
+            "0.8.25",
+            "0.8.26",
+            "0.8.27",
+          ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js '20.x'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: Install solc-select
+        run: pip3 install solc-select
+
+      - name: Use Solc v${{ matrix.solc }}
+        run: |
+          solc-select install ${{ matrix.solc }}
+          solc-select use ${{ matrix.solc }}
+
+      - name: Compare versions to filter contracts to compile
+        uses: madhead/semver-utils@latest
+        id: comparison
+        with:
+          version: ${{ matrix.solc }}
+          compare-to: 0.8.12
+
+      # In the pattern matching of the `grep` command below, we use a path for LSP8 contracts with `pragma solidity ^0.8.12`
+      # instead of just the word "LSP8IdentifiableDigitalAsset" to prevent the whole `contracts/LSP8IdentifiableDigitalAsset/**/*.sol` folder from being discarded.
+      - name: Compile Smart Contracts
+        run: |
+          if [[ "<" == "${{ steps.comparison.outputs.comparison-result }}" ]]
+          then
+            solc $(ls contracts/**/*.sol | grep -v "Extension4337\|contracts/LSP8IdentifiableDigitalAsset/LSP8IdentifiableDigitalAsset") \
+              --allow-paths $(pwd)/node_modules/,$(pwd)/packages/ \
+              ../=$(pwd)/contracts/ \
+              @=node_modules/@ \
+              solidity-bytes-utils/=node_modules/solidity-bytes-utils/
+          else
+            solc contracts/**/*.sol \
+              @=node_modules/@ \
+              solidity-bytes-utils/=node_modules/solidity-bytes-utils/
+          fi;

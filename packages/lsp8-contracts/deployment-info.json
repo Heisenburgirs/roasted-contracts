@@ -1,0 +1,11 @@
+{
+  "contractAddress": "0x2A010a3dBD0760099Da8A87E090899E68BA6285d",
+  "name": "Roasted",
+  "symbol": "ROAST",
+  "owner": "0x4dEd4822C09b850Fb0da640695a848D0C7267fb7",
+  "lsp4TokenType": 1,
+  "lsp8TokenIdFormat": 0,
+  "deploymentTime": "2025-03-02T18:08:00.891Z",
+  "network": "lukso",
+  "deployedVia": "0x4dEd4822C09b850Fb0da640695a848D0C7267fb7"
+}

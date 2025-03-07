@@ -1,0 +1,52 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.local"],
+  "tasks": {
+    "clean": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["artifacts/**", "!artifacts/*.json", "typechain/**"],
+      "cache": true
+    },
+    "build:foundry": {
+      "dependsOn": ["^build:foundry"],
+      "cache": true
+    },
+    "build:js": {
+      "dependsOn": ["build", "^build", "^build:js"],
+      "outputs": ["dist/**"],
+      "cache": true
+    },
+    "build:types": {
+      "dependsOn": ["^package", "package", "^build:types"],
+      "outputs": ["types/**"],
+      "cache": true
+    },
+    "package": {
+      "dependsOn": ["^package"],
+      "outputs": ["artifacts/*.json"]
+    },
+    "lint": {
+      "env": [
+        "CONTRACT_VERIFICATION_TESTNET_PK",
+        "CONTRACT_VERIFICATION_MAINNET_PK"
+      ]
+    },
+    "lint:solidity": {},
+    "test": {
+      "dependsOn": ["build:js", "^test"],
+      "cache": true,
+      "env": ["COVERAGE"]
+    },
+    "test:coverage": {
+      "dependsOn": ["build:js", "^test"],
+      "cache": false
+    },
+    "test:foundry": {
+      "dependsOn": ["build", "^build:foundry"],
+      "cache": true
+    }
+  }
+}

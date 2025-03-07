@@ -1,0 +1,43 @@
+[profile.default]
+src = 'contracts'
+out = 'out'
+libs = ['node_modules','lib']
+gas_reports = ["LSP6ExecuteRestrictedController", "LSP6ExecuteUnrestrictedController", "LSP6SetDataRestrictedController", "LSP6SetDataUnrestrictedController"]
+cache_path = 'forge-cache'
+test = 'tests/foundry'
+solc = "0.8.17"
+
+[fuzz]
+runs = 10_000
+max_test_rejects = 200_000
+
+[profile.lsp0]
+src = 'packages/lsp0-contracts/contracts'
+test = 'packages/lsp0-contracts/foundry'
+out = 'packages/lsp0-contracts/contracts/foundry_artifacts'
+
+[profile.lsp2]
+src = 'packages/lsp2-contracts/contracts'
+test = 'packages/lsp2-contracts/foundry'
+out = 'packages/lsp2-contracts/contracts/foundry_artifacts'
+
+[profile.lsp6]
+src = 'packages/lsp6-contracts/contracts'
+test = 'packages/lsp6-contracts/foundry'
+out = 'packages/lsp6-contracts/contracts/foundry_artifacts'
+
+[profile.lsp11]
+src = 'packages/lsp11-contracts/contracts'
+test = 'packages/lsp11-contracts/foundry'
+out = 'packages/lsp11-contracts/contracts/foundry_artifacts'
+
+[profile.lsp16]
+src = 'packages/lsp16-contracts/contracts'
+test = 'packages/lsp16-contracts/foundry'
+out = 'packages/lsp16-contracts/contracts/foundry_artifacts'
+
+[profile.lsp_smart_contracts]
+src = 'packages/lsp-smart-contracts/contracts'
+test = 'packages/lsp-smart-contracts/tests/foundry'
+out = 'packages/lsp-smart-contracts/contracts/foundry_artifacts'
+solc = "0.8.24"

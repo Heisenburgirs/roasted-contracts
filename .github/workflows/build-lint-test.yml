@@ -1,0 +1,50 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+name: Node.js CI - Build + Lint + Test
+
+on: pull_request
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+      - name: Use Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Run Solidity Linter
+        run: npm run lint:solidity
+
+      - name: 🎨 Run ESLint on JS/TS files
+        run: npm run lint
+
+      # This will also generate the Typechain types and the files with the constants used by the Chai tests
+      # The turbo configs in `turbo.json` is setup to run `npm run build` command first before `npm run build:js`.
+      # Also test to generate the typed ABIs with `npm run build:types` to ensure the `release.yml` workflow will pass successfully.
+      - name: 🏗️ Build contract artifacts
+        run: |
+          npm run build:js
+          npm run build:types
+
+      # - name: 📚 generate ABI docs
+      #   run: npm run build:docs
+
+      # - name: 🔍 check if ABI auto-generated docs need to be updated
+      #   run: |-
+      #     if [[ $(git diff --name-only) != "" ]];
+      #     then
+      #       echo "Error: Please generate ABI docs after making changes to Solidity code and Natspec comments!"
+      #       exit 1
+      #     fi
+
+      - name: 🧪 Run tests for each package
+        run: npm run test

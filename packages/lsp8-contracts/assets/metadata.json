@@ -1,0 +1,54 @@
+{
+  "LSP4Metadata": {
+    "name": "Roast NFT",
+    "description": "A token that roasts someone on the blockchain",
+    "links": [
+      {
+        "title": "Website",
+        "url": "https://lukso.network"
+      }
+    ],
+    "attributes": [
+      {
+        "key": "Roaster",
+        "value": "0xB59D1b10cC807DB7FE62e568f7Eb0a3FCd3EF457",
+        "type": "string"
+      },
+      {
+        "key": "Roastee",
+        "value": "0xcebD62B64dcB774DB432FA32f4523a34AFDD220f",
+        "type": "string"
+      },
+      {
+        "key": "Timestamp",
+        "value": 1740939366,
+        "type": "number"
+      }
+    ],
+    "images": [
+      [
+        {
+          "width": 1024,
+          "height": 1024,
+          "url": "ipfs://QmVfYb9D6x5hNuAaMa1qmoS2LmGi9Z78B1JKKaMyedv7wv/roast.png",
+          "verification": {
+            "method": "keccak256(bytes)",
+            "data": "0x01299df007997de92a820c6c2ec1cb2d3f5aa5fc1adf294157de563eba39bb6f"
+          }
+        }
+      ]
+    ],
+    "icon": [
+      {
+        "width": 256,
+        "height": 256,
+        "url": "ipfs://QmPS3n3xe5gQsGpUnpaYWvzug44JknBZbUv6cv8yKJ7Gsi/icon.png",
+        "verification": {
+          "method": "keccak256(bytes)",
+          "data": "0x01299df007997de92a820c6c2ec1cb2d3f5aa5fc1adf294157de563eba39bb6f"
+        }
+      }
+    ],
+    "assets": []
+  }
+}
